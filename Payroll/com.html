@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technician Potential Commission Calculator - Bayshore Plumbers</title>
+  <!-- On-screen style -->
+  <link rel="stylesheet" href="payrollstyle.css" type="text/css">
+  <!-- Print style -->
+  <link rel="stylesheet" href="payrollprint.css" type="text/css" media="print">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-container">
+      <img src="BP.png" alt="Bayshore Plumbers Logo" class="logo">
+    </div>
+    <h1>Technician Potential Commission Calculator</h1>
+  </div>
+  
+  <main class="container">
+    <section class="calculator">
+      <form id="commissionForm">
+        <!-- Managerial Assistance Button -->
+        <div class="button-group">
+          <button id="managerialAssistanceBtn" class="large-button red dynamic-button" type="button" aria-label="Toggle Managerial Assistance">
+            NON-ASSISTED SALE
+          </button>
+        </div>
+
+        <!-- Input Details Table -->
+        <table class="input-data">
+          <tbody>
+            <tr>
+              <th>Technician's Name:</th>
+              <td>
+                <input type="text" id="tn" name="tn" placeholder="Enter Technician's name" aria-label="Technician's Name">
+              </td>
+              <th>Invoice Number:</th>
+              <td>
+                <input type="text" id="in" name="in" placeholder="Enter invoice number" aria-label="Invoice Number">
+              </td>
+            </tr>
+            <tr>
+              <th>Total Price:</th>
+              <td>
+                <input type="number" id="tp" name="tp" placeholder="Enter final selling price" min="0" aria-label="Total Price">
+              </td>
+              <th>Project Duration (Hours):</th>
+              <td>
+                <input type="number" id="pd" name="pd" placeholder="Enter project duration" min="0" aria-label="Project Duration">
+              </td>
+            </tr>
+            <tr>
+              <th>Material Expenses:</th>
+              <td>
+                <input type="number" id="material" name="material" placeholder="Enter material expenses" min="0" aria-label="Material Expenses">
+              </td>
+              <th>Job Address:</th>
+              <td>
+                <input type="text" id="ja" name="ja" placeholder="Enter job address" aria-label="Job Address">
+              </td>
+            </tr>
+            <tr>
+              <th>Other Expense:</th>
+              <td>
+                <input type="number" id="oe" name="oe" placeholder="Enter other expenses" min="0" aria-label="Other Expenses">
+              </td>
+              <th>Date:</th>
+              <td>
+                <input type="date" id="date" name="date" aria-label="Date">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Job Category and Type -->
+        <table class="input-data">
+          <tbody>
+            <tr>
+              <th>Job Category:</th>
+              <td>
+                <select id="jobCategorySelect" aria-label="Select Job Category">
+                  <option value="">-- Select a Job Category --</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+              </td>
+            </tr>
+            <tr id="jobTypeSearchRow" style="display:none;">
+              <th>Search Job Type:</th>
+              <td>
+                <input type="text" id="jobTypeSearch" placeholder="Type to filter job types..." aria-label="Search Job Type">
+              </td>
+            </tr>
+            <tr id="jobTypeRow" style="display:none;">
+              <th>Job Type:</th>
+              <td>
+                <select id="jobTypeSelect" aria-label="Select Job Type">
+                  <option value="">-- Select a Job Type --</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Labor Details -->
+        <table class="input-data">
+          <thead>
+            <tr>
+              <th colspan="4">Labor Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Day 1:</th>
+              <td>
+                <input type="number" id="day1" name="day1" min="0" aria-label="Labor Day 1 Hours">
+              </td>
+              <th>Day 2:</th>
+              <td>
+                <input type="number" id="day2" name="day2" min="0" aria-label="Labor Day 2 Hours">
+              </td>
+            </tr>
+            <tr>
+              <th>Day 3:</th>
+              <td>
+                <input type="number" id="day3" name="day3" min="0" aria-label="Labor Day 3 Hours">
+              </td>
+              <th>Day 4:</th>
+              <td>
+                <input type="number" id="day4" name="day4" min="0" aria-label="Labor Day 4 Hours">
+              </td>
+            </tr>
+            <tr>
+              <th>Day 5:</th>
+              <td>
+                <input type="number" id="day5" name="day5" min="0" aria-label="Labor Day 5 Hours">
+              </td>
+              <th>Additional Hours:</th>
+              <td>
+                <input type="number" id="ah" name="ah" min="0" aria-label="Additional Hours">
+              </td>
+            </tr>
+            <tr>
+              <th>Total Overtime Hours:</th>
+              <td>
+                <input type="number" id="toh" name="toh" min="0" aria-label="Total Overtime Hours">
+              </td>
+              <th>Total Hours:</th>
+              <td>
+                <input type="number" id="totalHours" name="totalHours" readonly aria-label="Total Labor Hours">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Job Explanation & Notes -->
+        <table class="input-data">
+          <tbody>
+            <tr>
+              <th colspan="2">Job Explanation &amp; Notes:</th>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <textarea id="notes" name="notes" rows="4" placeholder="Enter notes here" aria-label="Job Explanation and Notes"></textarea>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Payment Questions -->
+        <div class="question-section">
+          <div id="question1">
+            <label>Is the payment received?</label>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('yes', 1)" aria-label="Yes">Yes</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('no', 1)" aria-label="No">No</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('account', 1)" aria-label="BAYSHORE ACCOUNT">BAYSHORE ACCOUNT</button>
+          </div>
+          <div id="question2" style="display:none;">
+            <label>How was the payment received?</label>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('Debit', 2)" aria-label="Debit Card">Debit Card</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('cash', 2)" aria-label="Cash">Cash</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('online', 2)" aria-label="Online">Online</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('creditCard', 2)" aria-label="Credit Card">Credit Card</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('check', 2)" aria-label="Check">Check</button>
+          </div>
+          <!-- New Question: Check Number (only shown if 'check' is selected) -->
+          <div id="questionCheck" style="display:none;">
+            <label>Enter Check Number:</label>
+            <input type="text" id="checkNumber" name="checkNumber" placeholder="Enter Check Number" aria-label="Check Number">
+          </div>
+          <div id="question3" style="display:none;">
+            <label>Is 3% credit card fee added?</label>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('yes', 3)" aria-label="Yes">Yes</button>
+            <button type="button" class="dynamic-button" onclick="handleAnswer('no', 3)" aria-label="No">No</button>
+          </div>
+        </div>
+
+        <!-- For Office Use Only -->
+        <table class="input-data">
+          <thead>
+            <tr>
+              <th colspan="4">For Office Use Only</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>SW21/RP21:</th>
+              <td>
+                <input type="text" id="sw" name="sw" readonly>
+              </td>
+              <th>WH32:</th>
+              <td>
+                <input type="text" id="wh" name="wh" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>RD15/UL15:</th>
+              <td>
+                <input type="text" id="rd" name="rd" readonly>
+              </td>
+              <th>BP%:</th>
+              <td>
+                <input type="text" id="bpp" name="bpp" readonly>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Output and Commission -->
+        <div class="output-group">
+          <div class="commission-display">
+            <!-- Total Commission Line -->
+            <p>
+              Total Commission: 
+              <span id="totalCommission">0.00</span>
+            </p>
+        
+            <!-- Sales Commission Line (hidden until Assisted Sale is toggled) -->
+            <p id="salesCommissionLabel" style="display:none;">
+              Sales Commission: 
+              <span id="salesCommission"></span>
+            </p>
+          </div>
+        </div>
+                
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button type="button" id="calculateBtn" aria-label="Calculate Commission">
+            Calculate Potential Commission
+          </button>
+          <button type="button" id="printButton" aria-label="Print Document">
+            Print
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+  
+  <script src="com.js"></script>
+</body>
+</html>
